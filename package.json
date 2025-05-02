@@ -1,8 +1,8 @@
 {
-  "name": "com.atteneder.gltfast",
-  "version": "6.10.1",
-  "displayName": "glTFast",
-  "description": "Use glTFast to import and export glTF 3D files efficiently at runtime or in the Editor",
+  "name": "com.cguevaraa.gltfast",
+  "version": "0.0.1",
+  "displayName": "patched glTFast",
+  "description": "Patched version of glTFast to avoid crash when importing Blender glb with armature and multiple materials",
   "unity": "2020.3",
   "keywords": [
     "mesh",
@@ -13,7 +13,8 @@
     "ktx",
     "basis",
     "universal",
-    "basisu"
+    "basisu",
+    "blender"
   ],
   "author": {
     "name": "Andreas Atteneder",
