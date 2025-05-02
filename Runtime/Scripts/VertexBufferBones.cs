@@ -22,6 +22,9 @@ namespace GLTFast
 
         NativeArray<VBones> m_Data;
 
+        JobHandle m_LastJobHandle;
+
+
         public VertexBufferBones(int vertexCount, ICodeLogger logger)
         {
             m_Logger = logger;
@@ -127,6 +130,8 @@ namespace GLTFast
 #endif
 
             Profiler.EndSample();
+            
+            m_LastJobHandle = jobHandle;
             return jobHandle;
         }
 
@@ -143,6 +148,11 @@ namespace GLTFast
             )
         {
             Profiler.BeginSample("ApplyBones");
+
+            if (m_LastJobHandle.IsCompleted == false) {
+                m_LastJobHandle.Complete();
+            }
+            
             msh.SetVertexBufferData(m_Data, 0, 0, m_Data.Length, stream, flags);
             Profiler.EndSample();
         }
