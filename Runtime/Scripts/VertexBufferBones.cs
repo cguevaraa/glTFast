@@ -23,6 +23,8 @@ namespace GLTFast
         NativeArray<VBones> m_Data;
 
         JobHandle m_LastJobHandle;
+        List<JobHandle> m_BoneJobHandles = new List<JobHandle>();
+
 
 
         public VertexBufferBones(int vertexCount, ICodeLogger logger)
@@ -117,6 +119,12 @@ namespace GLTFast
                     bones = m_Data,
                     skinWeights = math.max(1, skinWeights)
                 };
+
+                if (job.HasValue)
+                {
+                    m_BoneJobHandles.Add(job.Value);
+                }
+
                 jobHandle = job.Schedule(m_Data.Length, GltfImport.DefaultBatchCount, jobHandle);
             }
 #if GLTFAST_SAFE
@@ -152,7 +160,7 @@ namespace GLTFast
             if (m_LastJobHandle.IsCompleted == false) {
                 m_LastJobHandle.Complete();
             }
-            
+
             msh.SetVertexBufferData(m_Data, 0, 0, m_Data.Length, stream, flags);
             Profiler.EndSample();
         }

@@ -90,6 +90,17 @@ namespace GLTFast
         public override unsafe JobHandle? CreateVertexBuffer()
         {
             Profiler.BeginSample("AllocateNativeArray");
+
+            // Ensure all scheduled bone jobs are completed before accessing the data
+            if (m_Bones.m_BoneJobHandles != null && m_Bones.m_BoneJobHandles.Count > 0)
+            {
+                foreach (var job in m_Bones.m_BoneJobHandles)
+                {
+                    job.Complete();
+                }
+                m_Bones.m_BoneJobHandles.Clear();
+            }
+
             m_Data = new NativeArray<TMainBuffer>(VertexCount, defaultAllocator);
             var vDataPtr = (byte*)m_Data.GetUnsafeReadOnlyPtr();
             Profiler.EndSample();
